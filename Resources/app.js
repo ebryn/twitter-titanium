@@ -21,21 +21,29 @@
   
     win.add(tableView);
     win.open();
-    
-    client.addEventListener('login', function(e) {
-      Ti.App.Properties.setString('twitterAccessTokenKey', e.accessTokenKey);
-      Ti.App.Properties.setString('twitterAccessTokenSecret', e.accessTokenSecret);
       
-      client.request("1/statuses/home_timeline.json", {count: 100}, 'GET', function(data) {
-        var json = JSON.parse(data.text), 
-            tweets = json.map(function(tweet) {
-              return {title: tweet.text};
-            });
-        
-        tableView.setData(tweets);
-      });
-    });
-  
     client.authorize();
+
+    client.addEventListener('login', function(e) {
+      if (e.success) {
+        Ti.App.Properties.setString('twitterAccessTokenKey', e.accessTokenKey);
+        Ti.App.Properties.setString('twitterAccessTokenSecret', e.accessTokenSecret);
+        
+        client.request("1/statuses/home_timeline.json", {count: 100}, 'GET', function(e) {
+          if (e.success) {
+            var json = JSON.parse(e.result.text), 
+                tweets = json.map(function(tweet) {
+                  return {title: tweet.text};
+                });
+            
+            tableView.setData(tweets);
+          } else  {
+            alert(e.error);
+          }
+        });
+      } else {
+        alert(e.error);
+      }
+    });
   }
 })(this);

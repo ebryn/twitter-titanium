@@ -21,12 +21,20 @@ var client = Twitter({
 client.authorize(); // Pops up a modal WebView
 
 client.addEventListener('login', function(e) {
-  // Your app code goes here... you'll likely want to save the access tokens passed in the event.
-  
-  // Here's an example API call:
-  client.request("1/statuses/home_timeline.json", {count: 100}, 'GET', function(data) {
-    // `data` is the response text
-  });
+  if (e.success) {
+    // Your app code goes here... you'll likely want to save the access tokens passed in the event.
+    
+    // Here's an example API call:
+    client.request("1/statuses/home_timeline.json", {count: 100}, 'GET', function(e) {
+      if (e.success) {
+        var data = JSON.parse(e.result.text);
+      } else {
+        alert(e.error);
+      }
+    });
+  } else {
+    alert(e.error);
+  }
 });
 ```
 

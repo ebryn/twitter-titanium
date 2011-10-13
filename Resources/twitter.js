@@ -99,7 +99,6 @@ exports.Twitter = (function(global) {
     });
 
     webView.addEventListener('load', function(event) {
-      Ti.API.debug(event);
       // If we're not on the Twitter authorize page
       if (event.url.indexOf(self.authorizeUrl) === -1) {
         webViewWindow.remove(loadingOverlay);
@@ -135,6 +134,8 @@ exports.Twitter = (function(global) {
           oauth.fetchAccessToken(function(data) {
             var returnedParams = oauth.parseTokenRequest(data.text);
             self.fireEvent('login', {
+              success: true,
+              error: false,
               accessTokenKey: returnedParams.oauth_token,
               accessTokenSecret: returnedParams.oauth_token_secret
             });
@@ -143,8 +144,11 @@ exports.Twitter = (function(global) {
               webViewWindow.close();
             }
           }, function(data) {
-            alert("Failure to fetch access token, please try again.");
-            Ti.API.debug(data);
+            self.fireEvent('login', {
+              success: false,
+              error: "Failure to fetch access token, please try again.",
+              result: data
+            });
           });
         }
       }
@@ -160,7 +164,12 @@ exports.Twitter = (function(global) {
     
     if (this.authorized) {
       // TODO: verify access tokens are still valid?
-      this.fireEvent('login', {accessTokenKey: this.accessTokenKey, accessTokenSecret: this.accessTokenSecret});
+      this.fireEvent('login', {
+        success: true,
+        error: false,
+        accessTokenKey: this.accessTokenKey,
+        accessTokenSecret: this.accessTokenSecret
+      });
     } else {
       createAuthWindow.call(this);
 
@@ -170,8 +179,11 @@ exports.Twitter = (function(global) {
           self.webView.url = authorizeUrl;
         },
         function(data) {
-          alert("Failure to fetch request token, please try again.");
-          Ti.API.debug(data);
+          self.fireEvent('login', {
+            success: false,
+            error: "Failure to fetch access token, please try again.",
+            result: data
+          });
         }
       );
     }
@@ -183,21 +195,29 @@ exports.Twitter = (function(global) {
    * @param {String} path the Twitter API path without leading forward slash. For example: `1/statuses/home_timeline.json`
    * @param {Object} params  the parameters to send along with the API call
    * @param {String} [httpVerb="GET"] the HTTP verb to use
-   * @param {Function} successCallback
-   * @param {Function} errorCallback (optional)
+   * @param {Function} callback
    */
-  Twitter.prototype.request = function(path, params, httpVerb, successCallback, errorCallback) {
+  Twitter.prototype.request = function(path, params, httpVerb, callback) {
     var self = this, oauth = this.oauthClient, url = "https://api.twitter.com/" + path;
-    
-    // errorCallback is optional
-    errorCallback = errorCallback || function() {};
     
     oauth.request({
       method: httpVerb,
       url: url,
       data: params,
-      success: function(data) { successCallback.call(self, data); },
-      error: function(data) { errorCallback.call(self, data); }
+      success: function(data) {
+        callback.call(self, {
+          success: true,
+          error: false,
+          result: data
+        });
+      },
+      error: function(data) { 
+        callback.call(self, {
+          success: false,
+          error: "Request failed",
+          result: data
+        });
+      }
     });
   };
   
