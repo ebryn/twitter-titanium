@@ -10,7 +10,7 @@
     var Twitter = require('twitter').Twitter;
     
     var client = Twitter({
-      consumerKey: "INSERT KEY HERE"
+      consumerKey: "INSERT KEY HERE",
       consumerSecret: "INSERT SECRET HERE",
       accessTokenKey: accessTokenKey, 
       accessTokenSecret: accessTokenSecret
