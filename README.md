@@ -10,7 +10,7 @@ become a maintainence issue if Twitter updates it's API.
 
 ## How to use
 
-- There is an example app included in this repository. See `app.js`
+There is an example app included in this repository. See (app.js)[https://github.com/ebryn/twitter-titanium/blob/master/Resources/app.js].
 
 ```
 var client = Twitter({

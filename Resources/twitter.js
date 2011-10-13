@@ -158,12 +158,12 @@ exports.Twitter = (function(global) {
   Twitter.prototype.authorize = function() {
     var self = this;
     
-    createAuthWindow.call(this);
-    
     if (this.authorized) {
       // TODO: verify access tokens are still valid?
       this.fireEvent('login', {accessTokenKey: this.accessTokenKey, accessTokenSecret: this.accessTokenSecret});
     } else {
+      createAuthWindow.call(this);
+
       this.oauthClient.fetchRequestToken(
         function(requestParams) {
           var authorizeUrl = self.authorizeUrl + requestParams;
