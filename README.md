@@ -49,7 +49,8 @@ To use twitter-titanium in your app, download and copy the following files into 
 
 ## Thanks
 
-twitter-titanium uses the jsOAuth library by @bytespider
+- twitter-titanium uses the [jsOAuth](github.com/bytespider/jsOAuth) library by @bytespider
+- [Metamorph.js](https://github.com/tomhuda/metamorph.js) by @wycats and @tomdale for inspiration
 
 ## Contact
 
