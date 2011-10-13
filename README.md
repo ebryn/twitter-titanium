@@ -38,6 +38,9 @@ client.addEventListener('login', function(e) {
 });
 ```
 
+To use twitter-titanium in your app, download and copy the following files into your app:
+[twitter.js](https://raw.github.com/ebryn/twitter-titanium/master/Resources/twitter.js)
+[jsOAuth-1.3.1.js](https://raw.github.com/ebryn/twitter-titanium/master/Resources/jsOAuth-1.3.1.js)
 
 ## Nice features
 
