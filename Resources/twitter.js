@@ -38,6 +38,7 @@ exports.Twitter = (function(global) {
     self.accessTokenKey = options.accessTokenKey;
     self.accessTokenSecret = options.accessTokenSecret;
     self.authorized = false;
+    self.listeners = {};
     
     if (self.accessTokenKey && self.accessTokenSecret) {
       self.authorized = true;
@@ -234,8 +235,9 @@ exports.Twitter = (function(global) {
    * Fire an event
    */
   Twitter.prototype.fireEvent = function(eventName, data) {
-    for (var i = 0; i < this.listeners[eventName].length; i++) {
-      this.listeners[eventName][i].call(this, data);
+    var eventListeners = this.listeners[eventName] || [];
+    for (var i = 0; i < eventListeners.length; i++) {
+      eventListeners[i].call(this, data);
     }
   };
   
