@@ -165,6 +165,11 @@ exports.Twitter = (function(global) {
     
     if (this.authorized) {
       // TODO: verify access tokens are still valid?
+      
+      // We're putting this fireEvent call inside setTimeout to allow
+      // a user to add an event listener below the call to authorize.
+      // Not totally sure if the timeout should be greater than 1. It
+      // seems to do the trick on iOS/Android.
       setTimeout(function() {
         self.fireEvent('login', {
           success: true,
