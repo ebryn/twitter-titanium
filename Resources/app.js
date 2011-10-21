@@ -21,9 +21,7 @@
   
     win.add(tableView);
     win.open();
-      
-    client.authorize();
-
+    
     client.addEventListener('login', function(e) {
       if (e.success) {
         Ti.App.Properties.setString('twitterAccessTokenKey', e.accessTokenKey);
@@ -45,5 +43,7 @@
         alert(e.error);
       }
     });
+    
+    client.authorize();
   }
 })(this);
