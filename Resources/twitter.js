@@ -165,12 +165,14 @@ exports.Twitter = (function(global) {
     
     if (this.authorized) {
       // TODO: verify access tokens are still valid?
-      this.fireEvent('login', {
-        success: true,
-        error: false,
-        accessTokenKey: this.accessTokenKey,
-        accessTokenSecret: this.accessTokenSecret
-      });
+      setTimeout(function() {
+        self.fireEvent('login', {
+          success: true,
+          error: false,
+          accessTokenKey: self.accessTokenKey,
+          accessTokenSecret: self.accessTokenSecret
+        });
+      }, 1);
     } else {
       createAuthWindow.call(this);
 
