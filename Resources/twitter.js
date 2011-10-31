@@ -85,9 +85,14 @@ exports.Twitter = (function(global) {
     webViewWindow.open({modal: true});
     
     webViewWindow.add(webView);
-    
+
     closeButton.addEventListener('click', function(e) {
       webViewWindow.close();
+      self.fireEvent('cancel', {
+        success: false,
+        error: "The user cancelled.",
+        result: null
+      });
     });
 
     backButton.addEventListener('click', function(e) {
